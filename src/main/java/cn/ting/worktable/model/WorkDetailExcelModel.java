@@ -1,11 +1,12 @@
-package cn.ting.worktable.entity;
+package cn.ting.worktable.model;
 
+import cn.ting.worktable.entity.WorkDetail;
 import cn.ting.worktable.util.excel.ExcelCell;
-import com.alibaba.fastjson.annotation.JSONField;
 
+import java.text.SimpleDateFormat;
 import java.util.Date;
 
-public class WorkDetail {
+public class WorkDetailExcelModel {
     @ExcelCell(index = 0)
     private Integer id;
 
@@ -28,18 +29,29 @@ public class WorkDetail {
     private Integer workHour;
 
     @ExcelCell(index = 7)
-    @JSONField(format = "yyyy-MM-dd HH:mm:ss")
-    private Date startTime;
+    private String startTime;
 
     @ExcelCell(index = 8)
-    @JSONField(format = "yyyy-MM-dd HH:mm:ss")
-    private Date endTime;
+    private String endTime;
+
+    public static WorkDetailExcelModel clone(WorkDetail workDetail) {
+        WorkDetailExcelModel workDetailExcelModel = new WorkDetailExcelModel()
+                .setModule(workDetail.getModule())
+                .setWorkHour(workDetail.getWorkHour())
+                .setDueDay(workDetail.getDueDay())
+                .setStaffName(workDetail.getStaffName())
+                .setStaffPos(workDetail.getStaffPos())
+                .setTaskName(workDetail.getTaskName())
+                .setStartTime(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(workDetail.getStartTime()))
+                .setEndTime(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(workDetail.getEndTime()));
+        return workDetailExcelModel;
+    }
 
     public Integer getId() {
         return id;
     }
 
-    public WorkDetail setId(Integer id) {
+    public WorkDetailExcelModel setId(Integer id) {
         this.id = id;
         return this;
     }
@@ -48,7 +60,7 @@ public class WorkDetail {
         return module;
     }
 
-    public WorkDetail setModule(String module) {
+    public WorkDetailExcelModel setModule(String module) {
         this.module = module;
         return this;
     }
@@ -57,7 +69,7 @@ public class WorkDetail {
         return staffName;
     }
 
-    public WorkDetail setStaffName(String staffName) {
+    public WorkDetailExcelModel setStaffName(String staffName) {
         this.staffName = staffName;
         return this;
     }
@@ -66,7 +78,7 @@ public class WorkDetail {
         return staffPos;
     }
 
-    public WorkDetail setStaffPos(String staffPos) {
+    public WorkDetailExcelModel setStaffPos(String staffPos) {
         this.staffPos = staffPos;
         return this;
     }
@@ -75,7 +87,7 @@ public class WorkDetail {
         return taskName;
     }
 
-    public WorkDetail setTaskName(String taskName) {
+    public WorkDetailExcelModel setTaskName(String taskName) {
         this.taskName = taskName;
         return this;
     }
@@ -84,7 +96,7 @@ public class WorkDetail {
         return dueDay;
     }
 
-    public WorkDetail setDueDay(Date dueDay) {
+    public WorkDetailExcelModel setDueDay(Date dueDay) {
         this.dueDay = dueDay;
         return this;
     }
@@ -93,25 +105,25 @@ public class WorkDetail {
         return workHour;
     }
 
-    public WorkDetail setWorkHour(Integer workHour) {
+    public WorkDetailExcelModel setWorkHour(Integer workHour) {
         this.workHour = workHour;
         return this;
     }
 
-    public Date getStartTime() {
+    public String getStartTime() {
         return startTime;
     }
 
-    public WorkDetail setStartTime(Date startTime) {
+    public WorkDetailExcelModel setStartTime(String startTime) {
         this.startTime = startTime;
         return this;
     }
 
-    public Date getEndTime() {
+    public String getEndTime() {
         return endTime;
     }
 
-    public WorkDetail setEndTime(Date endTime) {
+    public WorkDetailExcelModel setEndTime(String endTime) {
         this.endTime = endTime;
         return this;
     }

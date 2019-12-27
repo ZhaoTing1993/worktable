@@ -1,54 +1,63 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="cn.ting.worktable.mapper.TaskMapper">
-  <resultMap id="BaseResultMap" type="cn.ting.worktable.entity.Task">
-    <result column="id" jdbcType="INTEGER" property="id" />
-    <result column="task_name" jdbcType="VARCHAR" property="taskName" />
-    <result column="weight" jdbcType="DECIMAL" property="weight" />
-    <result column="module" jdbcType="VARCHAR" property="module" />
-    <result column="staff_pos" jdbcType="VARCHAR" property="staffPos" />
-  </resultMap>
-  <insert id="insert" parameterType="cn.ting.worktable.entity.Task">
-    insert into task (id, task_name, weight, 
-      module, staff_pos)
-    values (#{id,jdbcType=INTEGER}, #{taskName,jdbcType=VARCHAR}, #{weight,jdbcType=DECIMAL}, 
-      #{module,jdbcType=VARCHAR}, #{staffPos,jdbcType=VARCHAR})
-  </insert>
-  <insert id="insertSelective" parameterType="cn.ting.worktable.entity.Task">
-    insert into task
-    <trim prefix="(" suffix=")" suffixOverrides=",">
-      <if test="id != null">
-        id,
-      </if>
-      <if test="taskName != null">
-        task_name,
-      </if>
-      <if test="weight != null">
-        weight,
-      </if>
-      <if test="module != null">
-        module,
-      </if>
-      <if test="staffPos != null">
-        staff_pos,
-      </if>
-    </trim>
-    <trim prefix="values (" suffix=")" suffixOverrides=",">
-      <if test="id != null">
-        #{id,jdbcType=INTEGER},
-      </if>
-      <if test="taskName != null">
-        #{taskName,jdbcType=VARCHAR},
-      </if>
-      <if test="weight != null">
-        #{weight,jdbcType=DECIMAL},
-      </if>
-      <if test="module != null">
-        #{module,jdbcType=VARCHAR},
-      </if>
-      <if test="staffPos != null">
-        #{staffPos,jdbcType=VARCHAR},
-      </if>
-    </trim>
-  </insert>
+    <resultMap id="BaseResultMap" type="cn.ting.worktable.entity.Task">
+        <result column="id" jdbcType="INTEGER" property="id"/>
+        <result column="task_name" jdbcType="VARCHAR" property="taskName"/>
+        <result column="weight" jdbcType="INTEGER" property="weight"/>
+        <result column="module" jdbcType="VARCHAR" property="module"/>
+        <result column="staff_pos" jdbcType="VARCHAR" property="staffPos"/>
+    </resultMap>
+    <sql id="base_columns">
+        id, task_name, weight, module, staff_pos
+    </sql>
+    <insert id="insert" parameterType="cn.ting.worktable.entity.Task">
+        insert into task (id, task_name, weight,
+                          module, staff_pos)
+        values (#{id,jdbcType=INTEGER}, #{taskName,jdbcType=VARCHAR}, #{weight,jdbcType=INTEGER},
+                #{module,jdbcType=VARCHAR}, #{staffPos,jdbcType=VARCHAR})
+    </insert>
+    <insert id="insertSelective" parameterType="cn.ting.worktable.entity.Task">
+        insert into task
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                id,
+            </if>
+            <if test="taskName != null">
+                task_name,
+            </if>
+            <if test="weight != null">
+                weight,
+            </if>
+            <if test="module != null">
+                module,
+            </if>
+            <if test="staffPos != null">
+                staff_pos,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                #{id,jdbcType=INTEGER},
+            </if>
+            <if test="taskName != null">
+                #{taskName,jdbcType=VARCHAR},
+            </if>
+            <if test="weight != null">
+                #{weight,jdbcType=INTEGER},
+            </if>
+            <if test="module != null">
+                #{module,jdbcType=VARCHAR},
+            </if>
+            <if test="staffPos != null">
+                #{staffPos,jdbcType=VARCHAR},
+            </if>
+        </trim>
+    </insert>
+    <select id="selectByModule" resultMap="BaseResultMap">
+        select
+        <include refid="base_columns"/>
+        from task
+        where module = #{module};
+    </select>
 </mapper>

@@ -1,13 +1,11 @@
 package cn.ting.worktable.entity;
 
-import java.math.BigDecimal;
-
 public class Task {
     private Integer id;
 
     private String taskName;
 
-    private BigDecimal weight;
+    private Integer weight;
 
     private String module;
 
@@ -29,11 +27,11 @@ public class Task {
         this.taskName = taskName == null ? null : taskName.trim();
     }
 
-    public BigDecimal getWeight() {
+    public Integer getWeight() {
         return weight;
     }
 
-    public void setWeight(BigDecimal weight) {
+    public void setWeight(Integer weight) {
         this.weight = weight;
     }
 
