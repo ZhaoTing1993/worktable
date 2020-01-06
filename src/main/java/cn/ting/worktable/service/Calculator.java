@@ -177,8 +177,13 @@ public class Calculator {
         }
     }
 
-    public void exportAll(String moduleName, List<WorkDetailExcelModel> workDetailExcelModels) {
+    public void exportAll(String fileName) {
         try {
+            List<WorkDetailExcelModel> workDetailExcelModels = new ArrayList<>();
+            List<WorkDetail> workDetails = workDetailMapper.selectAll();
+            for (WorkDetail workDetail : workDetails) {
+                workDetailExcelModels.add(WorkDetailExcelModel.clone(workDetail));
+            }
             //用排序的Map且Map的键应与ExcelCell注解的index对应
             Map<String, String> map = new LinkedHashMap<>();
             map.put("id", "id");
@@ -191,7 +196,7 @@ public class Calculator {
             map.put("startTime", "startTime");
             map.put("endTime", "endTime");
 
-            File f = new File(moduleName + ".xls");
+            File f = new File(fileName + ".xls");
             OutputStream out = new FileOutputStream(f);
 
             ExcelUtil.exportExcel(map, workDetailExcelModels, out);

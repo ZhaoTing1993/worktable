@@ -26,4 +26,9 @@ class CalculatorTest extends WorktableApplicationTests {
         calculator.calcByModule("Config v1.2");
         calculator.calcByModule("Backend System Localization v1.2");
     }
+
+    @Test
+    void exportAll() {
+        calculator.exportAll("all");
+    }
 }

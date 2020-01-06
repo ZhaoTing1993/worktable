@@ -119,4 +119,9 @@
             </if>
         </where>
     </select>
+    <select id="selectAll" resultMap="BaseResultMap">
+        select
+        <include refid="base_columns"/>
+        from work_detail
+    </select>
 </mapper>
