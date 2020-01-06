@@ -10,6 +10,7 @@ import cn.ting.worktable.mapper.WorkDetailMapper;
 import cn.ting.worktable.mapper.WorkModuleMapper;
 import cn.ting.worktable.model.WorkDetailExcelModel;
 import cn.ting.worktable.util.HolidayUtils;
+import cn.ting.worktable.util.SeedUtils;
 import cn.ting.worktable.util.excel.ExcelUtil;
 import com.alibaba.fastjson.JSON;
 import org.apache.commons.lang3.RandomUtils;
@@ -70,7 +71,7 @@ public class Calculator {
                 }).collect(Collectors.toList());
                 if (spTasks.size() > 0) {
                     Task currentTask = null;
-                    int workHour = RandomUtils.nextInt(8, 11);
+                    int workHour = SeedUtils.generateWorkHour();
                     if (totoalHour.compareTo(new BigDecimal(11)) > 0) {
                         totoalHour = totoalHour.subtract(new BigDecimal(workHour));
                     } else {
