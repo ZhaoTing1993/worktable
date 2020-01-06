@@ -91,31 +91,31 @@
         from work_detail
         <where>
             <if test="id != null">
-                #{id,jdbcType=INTEGER}
+                id = #{id,jdbcType=INTEGER}
             </if>
             <if test="module != null">
-                and #{module,jdbcType=VARCHAR}
+                and module = #{module,jdbcType=VARCHAR}
             </if>
             <if test="staffName != null">
-                and #{staffName,jdbcType=VARCHAR}
+                and staff_name= #{staffName,jdbcType=VARCHAR}
             </if>
             <if test="staffPos != null">
-                and #{staffPos,jdbcType=VARCHAR}
+                and staff_pos = #{staffPos,jdbcType=VARCHAR}
             </if>
             <if test="taskName != null">
-                and #{taskName,jdbcType=VARCHAR}
+                and task_name = #{taskName,jdbcType=VARCHAR}
             </if>
             <if test="dueDay != null">
-                and #{dueDay,jdbcType=DATE}
+                and due_day = #{dueDay,jdbcType=DATE}
             </if>
             <if test="workHour != null">
-                and #{workHour,jdbcType=DATE}
+                and work_hour = #{workHour,jdbcType=INTEGER}
             </if>
             <if test="startTime != null">
-                and #{startTime,jdbcType=TIMESTAMP}
+                and start_time = #{startTime,jdbcType=TIMESTAMP}
             </if>
             <if test="endTime != null">
-                and #{endTime,jdbcType=TIMESTAMP}
+                and end_time = #{endTime,jdbcType=TIMESTAMP}
             </if>
         </where>
     </select>

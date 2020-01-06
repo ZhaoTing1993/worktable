@@ -1,4 +1,6 @@
 insert into task(task_name, module, weight,staff_pos) values
-('后端研发','Config',1,'Back-end Developer'),
-('客户端研发','Config',1,'Native Developer'),
-('前端页面制作','Config',1,'Front-end Developer');
+('Design','Config',10,'Back-end Developer'),
+('Coding','Config',50,'Back-end Developer'),
+('Integration','Config',5,'Back-end Developer'),
+('Unit Test','Config',5,'Back-end Developer'),
+('Bug Fix','Config',30,'Back-end Developer');

@@ -44,7 +44,7 @@ public class Calculator {
         BigDecimal totoalHour = workModule.getWorkHour();
 
         BigDecimal workDay = totoalHour.divide(new BigDecimal(8));
-        Date current = workModule.getStartDay();
+        Date moduleStartDay = workModule.getStartDay();
         ArrayList<WorkDetail> workDetails = new ArrayList<>();
         ArrayList<WorkDetailExcelModel> workDetailExcelModels = new ArrayList<>();
 
@@ -59,6 +59,9 @@ public class Calculator {
             taskWorkHourMap.put(task.getTaskName(), taskHour.intValue());
         }
 
+        //每个员工当前工作时间标记
+        HashMap<String, Date> staffCurrentDayMap = new HashMap<>();
+
         while (totoalHour.compareTo(BigDecimal.ZERO) > 0) {
 
             for (Staff staff : staffs) {
@@ -67,7 +70,7 @@ public class Calculator {
                 }).collect(Collectors.toList());
                 if (spTasks.size() > 0) {
                     Task currentTask = null;
-                    int workHour = RandomUtils.nextInt(8, 12);
+                    int workHour = RandomUtils.nextInt(8, 11);
                     if (totoalHour.compareTo(new BigDecimal(11)) > 0) {
                         totoalHour = totoalHour.subtract(new BigDecimal(workHour));
                     } else {
@@ -88,6 +91,7 @@ public class Calculator {
                         } else {
                             taskWorkHourMap.put(task.getTaskName(), hourLeft - workHour);
                             currentTask = task;
+                            break;
                         }
                     }
                     if (staffTaskEnd) {
@@ -97,9 +101,15 @@ public class Calculator {
                     WorkDetail workDetail = new WorkDetail();
 
                     boolean occupied = true;//该员工时间是否已占用
+                    Date current = staffCurrentDayMap.get(staff.getStaffEn());
+                    if (current == null) {
+                        current = moduleStartDay;
+                    }
                     while (HolidayUtils.isHolidayOrFestival(current) || occupied) {
                         current = DateUtils.addDays(current, 1);
                         WorkDetail queryParam = new WorkDetail();
+                        current = DateUtils.setHours(current, 0);
+                        current = DateUtils.setMinutes(current, 0);
                         queryParam.setDueDay(current)
                                 .setStaffName(staff.getStaffName());
                         WorkDetail searchResult = workDetailMapper.selectSelective(queryParam);
@@ -129,10 +139,9 @@ public class Calculator {
                     workDetails.add(workDetail);
                     workDetailExcelModels.add(WorkDetailExcelModel.clone(workDetail));
                     workDetailMapper.insertSelective(workDetail);
+                    staffCurrentDayMap.put(staff.getStaffEn(), current);
                 }
             }
-            current = DateUtils.addDays(current, 1);
-
         }
 
         try {

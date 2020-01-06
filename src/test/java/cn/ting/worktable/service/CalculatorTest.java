@@ -11,6 +11,6 @@ class CalculatorTest extends WorktableApplicationTests {
 
     @Test
     void calcByModule() {
-        calculator.calcByModule("Config");
+        calculator.calcByModule("Login");
     }
 }
