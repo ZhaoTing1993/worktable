@@ -37,7 +37,7 @@ public class Calculator {
     @Autowired
     private TaskMapper taskMapper;
 
-    public void calcByModule(String moduleName) {
+    public List<WorkDetailExcelModel> calcByModule(String moduleName) {
         WorkModule workModule = workModuleMapper.selectByName(moduleName);
         List<Staff> staffs = staffMapper.selectByMoudule(moduleName);
         List<Task> tasks = taskMapper.selectByModule(moduleName);
@@ -106,7 +106,6 @@ public class Calculator {
                         current = moduleStartDay;
                     }
                     while (HolidayUtils.isHolidayOrFestival(current) || occupied) {
-                        current = DateUtils.addDays(current, 1);
                         WorkDetail queryParam = new WorkDetail();
                         current = DateUtils.setHours(current, 0);
                         current = DateUtils.setMinutes(current, 0);
@@ -117,7 +116,10 @@ public class Calculator {
                             occupied = true;
                         } else {
                             occupied = false;
+                            if (!HolidayUtils.isHolidayOrFestival(current))
+                                break;
                         }
+                        current = DateUtils.addDays(current, 1);
                     }
                     Date startTime = DateUtils.setHours(current, 9);
                     startTime = DateUtils.setMinutes(startTime, 30);
@@ -144,6 +146,11 @@ public class Calculator {
             }
         }
 
+        exportExcel(moduleName, workDetailExcelModels);
+        return workDetailExcelModels;
+    }
+
+    public void exportExcel(String fileName, List<WorkDetailExcelModel> workDetailExcelModels) {
         try {
             //用排序的Map且Map的键应与ExcelCell注解的index对应
             Map<String, String> map = new LinkedHashMap<>();
@@ -157,7 +164,31 @@ public class Calculator {
             map.put("startTime", "startTime");
             map.put("endTime", "endTime");
 
-            File f = new File("test.xls");
+            File f = new File(fileName + ".xls");
+            OutputStream out = new FileOutputStream(f);
+
+            ExcelUtil.exportExcel(map, workDetailExcelModels, out);
+            out.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void exportAll(String moduleName, List<WorkDetailExcelModel> workDetailExcelModels) {
+        try {
+            //用排序的Map且Map的键应与ExcelCell注解的index对应
+            Map<String, String> map = new LinkedHashMap<>();
+            map.put("id", "id");
+            map.put("module", "module");
+            map.put("staffName", "staffName");
+            map.put("staffPos", "staffPos");
+            map.put("taskName", "taskName");
+            map.put("dueDay", "dueDay");
+            map.put("workHour", "workHour");
+            map.put("startTime", "startTime");
+            map.put("endTime", "endTime");
+
+            File f = new File(moduleName + ".xls");
             OutputStream out = new FileOutputStream(f);
 
             ExcelUtil.exportExcel(map, workDetailExcelModels, out);
