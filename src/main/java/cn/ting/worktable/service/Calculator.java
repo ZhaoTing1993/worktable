@@ -39,7 +39,7 @@ public class Calculator {
 
     public List<WorkDetailExcelModel> calcByModule(String moduleName) {
         WorkModule workModule = workModuleMapper.selectByName(moduleName);
-        List<Staff> staffs = staffMapper.selectByMoudule(moduleName);
+        List<Staff> staffs = staffMapper.selectByDepartment(workModule.getDepartment());
         List<Task> tasks = taskMapper.selectByModule(moduleName);
         BigDecimal totoalHour = workModule.getWorkHour();
 
