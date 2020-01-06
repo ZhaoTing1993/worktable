@@ -119,6 +119,8 @@ public class Calculator {
                             if (!HolidayUtils.isHolidayOrFestival(current))
                                 break;
                         }
+                        //occupied 这个
+                        occupied = true;
                         current = DateUtils.addDays(current, 1);
                     }
                     Date startTime = DateUtils.setHours(current, 9);
