@@ -24,9 +24,9 @@ create table task
 (
     id int(11) not null auto_increment,
     task_name varchar(100),
+    weight int(11),
     module varchar(50),
     staff_pos varchar(500),
-    weight decimal(22,4),
     primary key (id)
 );
 
@@ -38,6 +38,7 @@ create table work_detail
     staff_pos  varchar(50),
     task_name  varchar(100),
     due_day date,
+    work_hour int(11),
     start_time datetime,
     end_time datetime,
     primary key (id)
