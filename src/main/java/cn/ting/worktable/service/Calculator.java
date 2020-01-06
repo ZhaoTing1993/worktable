@@ -72,7 +72,7 @@ public class Calculator {
                 if (spTasks.size() > 0) {
                     Task currentTask = null;
                     int workHour = SeedUtils.generateWorkHour();
-                    if (totoalHour.compareTo(new BigDecimal(11)) > 0) {
+                    if (totoalHour.compareTo(new BigDecimal(workHour)) > 0) {
                         totoalHour = totoalHour.subtract(new BigDecimal(workHour));
                     } else {
                         workHour = totoalHour.intValue();
@@ -82,7 +82,7 @@ public class Calculator {
                     for (int i = 0; i < spTasks.size(); i++) {
                         Task task = spTasks.get(i);
                         Integer hourLeft = taskWorkHourMap.get(task.getTaskName());
-                        if (hourLeft < 0) {
+                        if (hourLeft <= 0) {
                             if (i != spTasks.size() - 1) {//上一任务时间耗净，下一个
                                 continue;
                             } else {//所有任务时间耗净
