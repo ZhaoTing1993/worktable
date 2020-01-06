@@ -12,6 +12,9 @@
         <result column="start_time" jdbcType="TIMESTAMP" property="startTime"/>
         <result column="end_time" jdbcType="TIMESTAMP" property="endTime"/>
     </resultMap>
+    <sql id="base_columns">
+        id, module, staff_name,staff_pos,task_name,due_day,work_hour,start_time,end_time
+    </sql>
     <insert id="insert" parameterType="cn.ting.worktable.entity.WorkDetail">
         insert into work_detail (id, module, staff_name,
                                  staff_pos, task_name, due_day, work_hour,
@@ -82,4 +85,38 @@
             </if>
         </trim>
     </insert>
+    <select id="selectSelective" resultMap="BaseResultMap">
+        select
+        <include refid="base_columns"/>
+        from work_detail
+        <where>
+            <if test="id != null">
+                #{id,jdbcType=INTEGER}
+            </if>
+            <if test="module != null">
+                and #{module,jdbcType=VARCHAR}
+            </if>
+            <if test="staffName != null">
+                and #{staffName,jdbcType=VARCHAR}
+            </if>
+            <if test="staffPos != null">
+                and #{staffPos,jdbcType=VARCHAR}
+            </if>
+            <if test="taskName != null">
+                and #{taskName,jdbcType=VARCHAR}
+            </if>
+            <if test="dueDay != null">
+                and #{dueDay,jdbcType=DATE}
+            </if>
+            <if test="workHour != null">
+                and #{workHour,jdbcType=DATE}
+            </if>
+            <if test="startTime != null">
+                and #{startTime,jdbcType=TIMESTAMP}
+            </if>
+            <if test="endTime != null">
+                and #{endTime,jdbcType=TIMESTAMP}
+            </if>
+        </where>
+    </select>
 </mapper>

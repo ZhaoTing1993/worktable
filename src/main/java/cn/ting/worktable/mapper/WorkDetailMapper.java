@@ -6,4 +6,6 @@ public interface WorkDetailMapper {
     int insert(WorkDetail record);
 
     int insertSelective(WorkDetail record);
+
+    WorkDetail selectSelective(WorkDetail workDetail);
 }

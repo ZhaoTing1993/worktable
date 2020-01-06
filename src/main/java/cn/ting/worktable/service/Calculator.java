@@ -6,6 +6,7 @@ import cn.ting.worktable.entity.WorkDetail;
 import cn.ting.worktable.entity.WorkModule;
 import cn.ting.worktable.mapper.StaffMapper;
 import cn.ting.worktable.mapper.TaskMapper;
+import cn.ting.worktable.mapper.WorkDetailMapper;
 import cn.ting.worktable.mapper.WorkModuleMapper;
 import cn.ting.worktable.model.WorkDetailExcelModel;
 import cn.ting.worktable.util.HolidayUtils;
@@ -31,7 +32,8 @@ public class Calculator {
     private WorkModuleMapper workModuleMapper;
     @Autowired
     private StaffMapper staffMapper;
-
+    @Autowired
+    private WorkDetailMapper workDetailMapper;
     @Autowired
     private TaskMapper taskMapper;
 
@@ -94,8 +96,18 @@ public class Calculator {
                     int i = RandomUtils.nextInt(0, spTasks.size() - 1);
                     WorkDetail workDetail = new WorkDetail();
 
-                    while (HolidayUtils.isHolidayOrFestival(current)) {
+                    boolean occupied = true;//该员工时间是否已占用
+                    while (HolidayUtils.isHolidayOrFestival(current) || occupied) {
                         current = DateUtils.addDays(current, 1);
+                        WorkDetail queryParam = new WorkDetail();
+                        queryParam.setDueDay(current)
+                                .setStaffName(staff.getStaffName());
+                        WorkDetail searchResult = workDetailMapper.selectSelective(queryParam);
+                        if (searchResult != null) {
+                            occupied = true;
+                        } else {
+                            occupied = false;
+                        }
                     }
                     Date startTime = DateUtils.setHours(current, 9);
                     startTime = DateUtils.setMinutes(startTime, 30);
@@ -116,6 +128,7 @@ public class Calculator {
                     System.out.println(JSON.toJSONString(workDetail));
                     workDetails.add(workDetail);
                     workDetailExcelModels.add(WorkDetailExcelModel.clone(workDetail));
+                    workDetailMapper.insertSelective(workDetail);
                 }
             }
             current = DateUtils.addDays(current, 1);
